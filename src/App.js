@@ -32,7 +32,7 @@ class App extends Component {
   }
 
   setArtists = async (query) => {
-    let artists = query.length >= 1 ? await getSearch(query, this.state.token) : await getTopArtists(this.state.token)
+    const artists = query.length >= 1 ? await getSearch(query, this.state.token) : await getTopArtists(this.state.token)
     await this.setState({artists})
   }
 
@@ -48,9 +48,14 @@ class App extends Component {
     playlist = await Promise.all(relatedArtistsTracks);
     playlist = await [selectedArtistTrack, ...playlist];
     const uris = {'uris': playlist.map(track => track.uri)};
-    await this.setState({playlist});
+    await this.setState({playlist, artists: null});
     const createdPlaylist = await createPlaylist({name: artistName + ' Smart Playlist'}, this.state.user.id, this.state.token);
     await addTracks(uris, createdPlaylist.id, this.state.token);
+  }
+
+  newPlaylist = async () => {
+    await this.setArtists('');
+    await this.setState({playlist: []});
   }
 
   render() {
@@ -67,7 +72,7 @@ class App extends Component {
               <Artists artists={artists.items} selectArtist={this.buildPlaylist}></Artists>
             }
             {playlist.length > 0 &&
-              <Playlist playlist={playlist}></Playlist>
+              <Playlist playlist={playlist} newPlaylist={this.newPlaylist}></Playlist>
             }
           </div>
         )}
