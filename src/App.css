@@ -31,7 +31,7 @@ body {
   line-height: 1;
   border-radius: 500px;
   padding: 11px 32px 9px;
-  display: inline-block;
+  display: block;
   margin-bottom: 0;
   font-weight: 700;
   text-align: center;
@@ -74,4 +74,12 @@ body {
 
 .form-control {
   border-radius: 500px;
+}
+
+@media (min-width: 576px) {
+  .btn {
+    display: inline-block;
+  }
+
+
 }

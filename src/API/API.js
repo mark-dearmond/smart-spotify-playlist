@@ -52,6 +52,17 @@ export const getTopTracks = async (id, token) => {
   return await topTracks.tracks;
 }
 
+export const getPlayist = async (id, token) => {
+  const res = await fetch(baseUrl + '/playlists/' + id, {
+    headers: {
+     'Authorization': 'Bearer ' + token
+    }
+  })
+
+  const playlist = await res.json();
+  return await playlist;
+}
+
 export const createPlaylist = async (data, userId, token) => {
   const res = await fetch(baseUrl + '/users/' + userId + '/playlists', {
     method: 'POST',

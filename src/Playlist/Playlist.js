@@ -1,17 +1,18 @@
 import React from 'react';
+import './Playlist.css'
 
 export default function Playlist(props) {
-  const {playlist, newPlaylist, playlistUrl} = props;
+  const {playlist, newPlaylist} = props;
   return (
     <div>
       <div className="row">
-        <div className="col-6">
+        <div className="col-sm-6 info">
           <h2 className="mb-0">Playlist</h2>
           <p>Your new playlist</p>
         </div>
-        <div className="col-6 text-right">
-          <button onClick={newPlaylist} className="btn btn-primary">Create New</button>
-          <a href={playlistUrl} className="btn btn-secondary ml-3">Listen Now</a>
+        <div className="col-sm-6 button-group">
+          <button onClick={newPlaylist} className="btn btn-primary mb-3 mb-md-0">Create New</button>
+          <a href={playlist.external_urls.spotify} className="btn btn-secondary mb-3 mb-md-0 ml-0 ml-md-2">Listen Now</a>
         </div>
       </div>
       <div className="row">
@@ -24,11 +25,11 @@ export default function Playlist(props) {
             </tr>
           </thead>
           <tbody>
-            {playlist.map(track => 
-              <tr key={track.id}>
-                <td>{track.name}</td>
-                <td>{track.artists[0].name}</td>
-                <td>{track.album.name}</td>
+            {playlist.tracks.items.map(item => 
+              <tr key={item.track.id}>
+                <td>{item.track.name}</td>
+                <td>{item.track.artists[0].name}</td>
+                <td>{item.track.album.name}</td>
               </tr>
             )}
           </tbody>

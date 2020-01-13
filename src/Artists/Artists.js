@@ -3,11 +3,16 @@ import './Artists.css';
 import Truncate from '../Util/Truncate';
 
 export default function Artists(props) {
-  const {artists, selectArtist} = props;
+  const {artists, selectArtist, onChange} = props;
   return (
     <div>
       <div className="row">
-        <div className="col-12">
+        <div className="col-sm-6 order-sm-12 mb-3 mb-sm-0">
+          <form className="form-inline">
+            <input className="form-control ml-auto" type="search" onChange={(e) => onChange(e.target.value)} placeholder="Search" aria-label="Search"/>
+          </form>
+        </div>
+        <div className="col-sm-6 order-sm-1">
           <h2 className="mb-0">Artists</h2>
           <p>Choose an artists to build a smart playlist from</p>
         </div>

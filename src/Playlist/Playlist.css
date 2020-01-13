@@ -1,0 +1,21 @@
+.info, .button-group {
+  text-align: center;
+}
+
+.btn {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .info {
+    text-align: left;
+  }
+
+  .button-group {
+    text-align: right;
+  }
+
+  .btn {
+    width: auto;
+  }
+}

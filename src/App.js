@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { authEndpoint, clientId, redirectUri, scopes } from "./config";
 import hash from "./Util/hash";
-import { getUser, getTopArtists, getSearch, getRelatedArtists, getTopTracks, createPlaylist, addTracks} from './API/API'
+import { getUser, getTopArtists, getSearch, getRelatedArtists, getTopTracks, createPlaylist, addTracks, getPlayist } from './API/API'
 import logo from './Spotify_Logo.png';
 import "./App.css";
 import Welcome from './Welcome/Welcome';
@@ -18,8 +18,7 @@ class App extends Component {
       token: null,
       user: null,
       artists: null,
-      playlist: [],
-      playlistUrl: null
+      playlist: null
     };
   }
 
@@ -33,12 +32,12 @@ class App extends Component {
   }
 
   setArtists = async (query) => {
-    const artists = query.length >= 1 ? await getSearch(query, this.state.token) : await getTopArtists(this.state.token)
+    const artists = query && query.length >= 1 ? await getSearch(query, this.state.token) : await getTopArtists(this.state.token)
     await this.setState({artists})
   }
 
   buildPlaylist = async (artistId, artistName) => {
-    let playlist = [];
+    let tracks = [];
     const selectedArtistTracks = await getTopTracks(artistId, this.state.token);
     const selectedArtistTrack = await selectedArtistTracks[Math.round(Math.random() * 5)];
     const relatedArtists = await getRelatedArtists(artistId, this.state.token);
@@ -46,21 +45,22 @@ class App extends Component {
       let topTracks = await getTopTracks(artist.id, this.state.token);
       return topTracks[Math.round(Math.random() * 5)];
     })
-    playlist = await Promise.all(relatedArtistsTracks);
-    playlist = await [selectedArtistTrack, ...playlist];
-    const uris = {'uris': playlist.map(track => track.uri)};
+    tracks = await Promise.all(relatedArtistsTracks);
+    tracks = await [selectedArtistTrack, ...tracks];
+    const uris = {'uris': tracks.map(track => track.uri)};
     const createdPlaylist = await createPlaylist({name: artistName + ' Smart Playlist'}, this.state.user.id, this.state.token);
     await addTracks(uris, createdPlaylist.id, this.state.token);
-    await this.setState({playlist, artists: null, playlistUrl: createdPlaylist.external_urls.spotify});
+    const playlist = await getPlayist(createdPlaylist.id, this.state.token);
+    await this.setState({playlist, artists: null});
   }
 
   newPlaylist = async () => {
-    await this.setArtists('');
-    await this.setState({playlist: [], playlistUrl: null});
+    await this.setArtists();
+    await this.setState({playlist: null});
   }
 
   render() {
-    const {token, user, artists, playlist, playlistUrl} = this.state;
+    const {token, user, artists, playlist} = this.state;
     return (
       <div className="container-fluid">
         {!token && (
@@ -68,12 +68,12 @@ class App extends Component {
         )}
         {token && (
           <div>
-            <Nav user={user} onChange={this.setArtists}></Nav>
+            <Nav user={user}></Nav>
             {artists && 
-              <Artists artists={artists.items} selectArtist={this.buildPlaylist}></Artists>
+              <Artists artists={artists.items} selectArtist={this.buildPlaylist} onChange={this.setArtists}></Artists>
             }
-            {playlist.length > 0 &&
-              <Playlist playlist={playlist} playlistUrl={playlistUrl} newPlaylist={this.newPlaylist}></Playlist>
+            {playlist &&
+              <Playlist playlist={playlist} newPlaylist={this.newPlaylist}></Playlist>
             }
           </div>
         )}
