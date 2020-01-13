@@ -1,0 +1,9 @@
+.user-image {
+  max-width: 50px;
+  display: inline-block;
+}
+
+.user-name {
+  display: inline-block;
+  margin-left: 10px;
+}
