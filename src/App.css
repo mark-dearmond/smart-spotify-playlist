@@ -58,6 +58,16 @@ body {
   border-color: var(--green-bright);
 }
 
+.btn.btn-secondary {
+  border: 2px solid white;
+  background: transparent;
+}
+
+.btn.btn-secondary:hover {
+  background: white;
+  color: var(--black);
+}
+
 .table-dark {
   background-color: var(--black);
 }

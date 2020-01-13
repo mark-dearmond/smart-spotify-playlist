@@ -18,7 +18,8 @@ class App extends Component {
       token: null,
       user: null,
       artists: null,
-      playlist: []
+      playlist: [],
+      playlistUrl: null
     };
   }
 
@@ -48,18 +49,18 @@ class App extends Component {
     playlist = await Promise.all(relatedArtistsTracks);
     playlist = await [selectedArtistTrack, ...playlist];
     const uris = {'uris': playlist.map(track => track.uri)};
-    await this.setState({playlist, artists: null});
     const createdPlaylist = await createPlaylist({name: artistName + ' Smart Playlist'}, this.state.user.id, this.state.token);
     await addTracks(uris, createdPlaylist.id, this.state.token);
+    await this.setState({playlist, artists: null, playlistUrl: createdPlaylist.external_urls.spotify});
   }
 
   newPlaylist = async () => {
     await this.setArtists('');
-    await this.setState({playlist: []});
+    await this.setState({playlist: [], playlistUrl: null});
   }
 
   render() {
-    const {token, user, artists, playlist} = this.state;
+    const {token, user, artists, playlist, playlistUrl} = this.state;
     return (
       <div className="container-fluid">
         {!token && (
@@ -72,7 +73,7 @@ class App extends Component {
               <Artists artists={artists.items} selectArtist={this.buildPlaylist}></Artists>
             }
             {playlist.length > 0 &&
-              <Playlist playlist={playlist} newPlaylist={this.newPlaylist}></Playlist>
+              <Playlist playlist={playlist} playlistUrl={playlistUrl} newPlaylist={this.newPlaylist}></Playlist>
             }
           </div>
         )}

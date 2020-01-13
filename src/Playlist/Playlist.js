@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function Playlist(props) {
-  const {playlist, newPlaylist} = props;
+  const {playlist, newPlaylist, playlistUrl} = props;
   return (
     <div>
       <div className="row">
@@ -10,7 +10,8 @@ export default function Playlist(props) {
           <p>Your new playlist</p>
         </div>
         <div className="col-6 text-right">
-          <button onClick={newPlaylist} className="btn btn-primary">Create Another Playlist</button>
+          <button onClick={newPlaylist} className="btn btn-primary">Create New</button>
+          <a href={playlistUrl} className="btn btn-secondary ml-3">Listen Now</a>
         </div>
       </div>
       <div className="row">
