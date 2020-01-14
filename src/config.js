@@ -6,6 +6,7 @@ export const redirectUri = "https://mark-dearmond.github.io/smart-spotify-playli
 export const scopes = [
   "playlist-read-private",
   "playlist-modify-private",
-  "playlist-modify-public"
+  "playlist-modify-public",
+  "user-top-read"
 ];
 export const baseUrl = "https://api.spotify.com/v1"
