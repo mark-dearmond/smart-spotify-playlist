@@ -27,13 +27,13 @@ class App extends Component {
     if (token) {
       const user = await getUser(token);
       const artists = await getTopArtists(token);
-      await this.setState({token, user, artists});
+      this.setState({token, user, artists});
     }
   }
 
   setArtists = async (query) => {
     const artists = query && query.length >= 1 ? await getSearch(query, this.state.token) : await getTopArtists(this.state.token)
-    await this.setState({artists})
+    this.setState({artists})
   }
 
   buildPlaylist = async (artistId, artistName) => {
@@ -51,12 +51,12 @@ class App extends Component {
     const createdPlaylist = await createPlaylist({name: artistName + ' Smart Playlist'}, this.state.user.id, this.state.token);
     await addTracks(uris, createdPlaylist.id, this.state.token);
     const playlist = await getPlayist(createdPlaylist.id, this.state.token);
-    await this.setState({playlist, artists: null});
+    this.setState({playlist, artists: null});
   }
 
   newPlaylist = async () => {
     await this.setArtists();
-    await this.setState({playlist: null});
+    this.setState({playlist: null});
   }
 
   render() {

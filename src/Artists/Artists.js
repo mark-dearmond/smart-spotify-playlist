@@ -1,6 +1,5 @@
 import React from 'react';
 import './Artists.css';
-import Truncate from '../Util/Truncate';
 
 export default function Artists(props) {
   const {artists, selectArtist, onChange} = props;
@@ -27,7 +26,7 @@ export default function Artists(props) {
               {artist.images.length === 0 &&
                 <div className="artist-image no-image"></div>
               }
-              <p className="artist-name mt-2">{Truncate(artist.name, 15)}</p>
+              <p className="artist-name mt-2">{artist.name}</p>
             </div>
           </div>
         )}
