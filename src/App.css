@@ -1,7 +1,7 @@
 :root {
   --black: #191414;
-  --green: #1DB954;
-  --green-bright: #1ED760;
+  --green: #1db954;
+  --green-bright: #1ed760;
 }
 
 body {
@@ -31,8 +31,8 @@ body {
 }
 
 .btn {
-  transition-property: background-color,border-color,color,box-shadow,filter;
-  transition-duration: .3s;
+  transition-property: background-color, border-color, color, box-shadow, filter;
+  transition-duration: 0.3s;
   border-width: 0;
   letter-spacing: 2px;
   min-width: 160px;
@@ -94,10 +94,41 @@ body {
   margin: 0 -15px;
 }
 
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(25, 20, 20, 0.7);
+  z-index: 9998;
+  top: 0;
+  left: 0;
+}
+
+.loader {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid var(--green);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 0.75s linear infinite;
+  z-index: 9999;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: (-50%, -50%);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 @media (min-width: 576px) {
   .btn {
     display: inline-block;
   }
-
-
 }

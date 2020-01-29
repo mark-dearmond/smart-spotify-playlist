@@ -17,6 +17,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
+      isLoading: true,
       token: null,
       user: null,
       artists: null,
@@ -29,7 +30,7 @@ class App extends Component {
     if (token) {
       const user = await API.getUser(token);
       const artists = await API.getTopArtists(token);
-      this.setState({ token, user, artists });
+      this.setState({ token, user, artists, isLoading: false });
     }
   }
 
@@ -42,6 +43,7 @@ class App extends Component {
   };
 
   buildPlaylist = async (artistId, artistName) => {
+    this.setState({ isLoading: true });
     let tracks = [];
     const selectedArtistTracks = await API.getTopTracks(
       artistId,
@@ -68,7 +70,7 @@ class App extends Component {
     );
     await API.addTracks(uris, createdPlaylist.id, this.state.token);
     const playlist = await API.getPlayist(createdPlaylist.id, this.state.token);
-    this.setState({ playlist, artists: null });
+    this.setState({ playlist, artists: null, isLoading: false });
   };
 
   newPlaylist = async () => {
@@ -77,9 +79,14 @@ class App extends Component {
   };
 
   render() {
-    const { token, user, artists, playlist } = this.state;
+    const { token, user, artists, playlist, isLoading } = this.state;
     return (
       <div className="container-fluid">
+        {token && isLoading && (
+          <div className="overlay">
+            <div className="loader"></div>
+          </div>
+        )}
         {!token && <Welcome url={authUrl} logo={logo}></Welcome>}
         {token && (
           <div>
