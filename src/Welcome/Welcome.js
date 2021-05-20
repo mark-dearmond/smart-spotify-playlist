@@ -23,9 +23,6 @@ export default function Welcome(props) {
           </div>
         </div>
       </div>
-      <footer className="footer">
-        <p className="mb-0">Mark DeArmond</p>
-      </footer>
     </div>
   );
 }
