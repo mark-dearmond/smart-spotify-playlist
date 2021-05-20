@@ -1,5 +1,3 @@
-## [Demo](https://mark-dearmond.github.io/smart-spotify-playlist/)
-
 ## Available Scripts
 
 In the project directory, you can run:
